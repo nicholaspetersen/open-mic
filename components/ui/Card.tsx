@@ -1,10 +1,11 @@
-import { ReactNode } from "react";
+import { ReactNode, CSSProperties } from "react";
 
 interface CardProps {
   children: ReactNode;
   className?: string;
   variant?: "default" | "highlight" | "ghost";
   padding?: "none" | "sm" | "md" | "lg";
+  style?: CSSProperties;
 }
 
 export function Card({
@@ -12,6 +13,7 @@ export function Card({
   className = "",
   variant = "default",
   padding = "md",
+  style,
 }: CardProps) {
   // Use inline styles for exact color control from Figma
   const variantStyles: Record<string, React.CSSProperties> = {
@@ -38,7 +40,7 @@ export function Card({
   return (
     <div
       className={`${paddings[padding]} ${className}`}
-      style={variantStyles[variant]}
+      style={{ ...variantStyles[variant], ...style }}
     >
       {children}
     </div>
