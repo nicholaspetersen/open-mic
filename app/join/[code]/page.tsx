@@ -43,10 +43,25 @@ export default async function JoinPage({ params, searchParams }: JoinPageProps) 
     orderBy: (signups, { asc }) => [asc(signups.position)],
   });
 
-  // Find user's own signup
-  const mySignup = deviceId
-    ? allSignups.find((s) => s.deviceId === deviceId)
-    : null;
+  // Get completed signups
+  const completedSignups = await db.query.signups.findMany({
+    where: and(
+      eq(signups.eventId, event.id),
+      or(
+        eq(signups.status, "completed"),
+        eq(signups.status, "no_show")
+      )
+    ),
+    with: {
+      song: true,
+    },
+    orderBy: (signups, { desc }) => [desc(signups.updatedAt)],
+  });
+
+  // Find user's own active signups
+  const mySignups = deviceId
+    ? allSignups.filter((s) => s.deviceId === deviceId)
+    : [];
 
   // Separate by status
   const currentPerformer = allSignups.find((s) => s.status === "performing");
@@ -59,7 +74,8 @@ export default async function JoinPage({ params, searchParams }: JoinPageProps) 
       currentPerformer={currentPerformer || null}
       onDeck={onDeck || null}
       queue={waitingQueue}
-      mySignup={mySignup || null}
+      completedSignups={completedSignups}
+      mySignups={mySignups}
       justSignedUp={signedup === "true"}
     />
   );

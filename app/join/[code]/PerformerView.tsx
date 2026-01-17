@@ -13,7 +13,8 @@ interface PerformerViewProps {
   currentPerformer: SignupWithSong | null;
   onDeck: SignupWithSong | null;
   queue: SignupWithSong[];
-  mySignup: SignupWithSong | null;
+  completedSignups: SignupWithSong[];
+  mySignups: SignupWithSong[];
   justSignedUp: boolean;
 }
 
@@ -33,21 +34,19 @@ export function PerformerView({
   currentPerformer,
   onDeck,
   queue,
-  mySignup: initialMySignup,
+  completedSignups,
+  mySignups,
   justSignedUp,
 }: PerformerViewProps) {
   const router = useRouter();
-  const [mySignup, setMySignup] = useState(initialMySignup);
+  const [localMySignups, setLocalMySignups] = useState(mySignups);
   const [showCelebration, setShowCelebration] = useState(justSignedUp);
-  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
+  const [showCancelConfirm, setShowCancelConfirm] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [showCompleted, setShowCompleted] = useState(false);
 
-  // Calculate position
-  const myPosition = mySignup
-    ? queue.findIndex((s) => s.id === mySignup.id) + 1 +
-      (currentPerformer ? 1 : 0) +
-      (onDeck ? 1 : 0)
-    : null;
+  // Check if user has any active signup (for celebration message)
+  const latestSignup = localMySignups[localMySignups.length - 1];
 
   // Dismiss celebration after 3 seconds
   useEffect(() => {
@@ -65,18 +64,22 @@ export function PerformerView({
     return () => clearInterval(interval);
   }, [router]);
 
-  const handleCancel = async () => {
-    if (!mySignup) return;
+  // Update local state when props change
+  useEffect(() => {
+    setLocalMySignups(mySignups);
+  }, [mySignups]);
+
+  const handleCancel = async (signupId: number) => {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`/api/signups/${mySignup.id}`, {
+      const response = await fetch(`/api/signups/${signupId}`, {
         method: "DELETE",
       });
 
       if (response.ok) {
-        setMySignup(null);
-        setShowCancelConfirm(false);
+        setLocalMySignups((prev) => prev.filter((s) => s.id !== signupId));
+        setShowCancelConfirm(null);
         router.refresh();
       }
     } catch (error) {
@@ -93,6 +96,11 @@ export function PerformerView({
       month: "long",
       day: "numeric",
     });
+  };
+
+  // Check if a signup belongs to the user
+  const isMySignup = (signupId: number) => {
+    return localMySignups.some((s) => s.id === signupId);
   };
 
   // Closed event
@@ -149,12 +157,12 @@ export function PerformerView({
         </div>
 
         {/* Celebration Banner */}
-        {showCelebration && mySignup && (
+        {showCelebration && latestSignup && (
           <Card variant="highlight" className="mb-4 text-center animate-slide-up">
             <div className="text-3xl mb-2">🎉</div>
             <p className="font-bold uppercase" style={{ color: COLORS.white }}>You&apos;re signed up!</p>
             <p className="text-sm" style={{ color: COLORS.gray }}>
-              You&apos;re #{myPosition} in line
+              You&apos;re in the queue
             </p>
           </Card>
         )}
@@ -201,9 +209,9 @@ export function PerformerView({
                 <QueueItem
                   signup={onDeck}
                   position={currentPerformer ? 2 : 1}
-                  isMe={onDeck.id === mySignup?.id}
+                  isMe={isMySignup(onDeck.id)}
                   event={event}
-                  onLeave={() => setShowCancelConfirm(true)}
+                  onLeave={() => setShowCancelConfirm(onDeck.id)}
                 />
               )}
               
@@ -215,9 +223,9 @@ export function PerformerView({
                     key={signup.id}
                     signup={signup}
                     position={position}
-                    isMe={signup.id === mySignup?.id}
+                    isMe={isMySignup(signup.id)}
                     event={event}
-                    onLeave={() => setShowCancelConfirm(true)}
+                    onLeave={() => setShowCancelConfirm(signup.id)}
                   />
                 );
               })}
@@ -226,7 +234,7 @@ export function PerformerView({
         </section>
 
         {/* On Deck Alert */}
-        {mySignup && mySignup.status === "on_deck" && (
+        {localMySignups.some((s) => s.status === "on_deck") && (
           <Card variant="highlight" className="mb-6 animate-pulse-glow">
             <div className="flex items-center gap-3">
               <div className="text-3xl">🎤</div>
@@ -239,23 +247,75 @@ export function PerformerView({
             </div>
           </Card>
         )}
+
+        {/* Completed Section */}
+        {completedSignups.length > 0 && (
+          <section className="mb-6">
+            <button
+              onClick={() => setShowCompleted(!showCompleted)}
+              className="w-full flex items-center justify-between py-2 mb-2"
+              style={{ borderBottom: `1px solid ${COLORS.border}` }}
+            >
+              <h2 className="text-sm font-bold uppercase tracking-tight" style={{ color: COLORS.gray }}>
+                Already Played ({completedSignups.length})
+              </h2>
+              <svg
+                className={`w-4 h-4 transition-transform ${showCompleted ? "rotate-180" : ""}`}
+                style={{ color: COLORS.gray }}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            
+            {showCompleted && (
+              <div className="space-y-2 animate-fade-in">
+                {completedSignups.map((signup) => (
+                  <div
+                    key={signup.id}
+                    className="flex items-center gap-3 px-3 py-2 opacity-60"
+                    style={{ backgroundColor: COLORS.card, border: `1px solid ${COLORS.border}` }}
+                  >
+                    <div 
+                      className="w-6 h-6 flex-shrink-0 flex items-center justify-center text-xs"
+                      style={{ backgroundColor: COLORS.borderLight, color: COLORS.white }}
+                    >
+                      ✓
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-bold text-sm truncate" style={{ color: COLORS.white }}>{signup.performerName}</p>
+                      {signup.song && (
+                        <p className="text-xs truncate" style={{ color: COLORS.gray }}>
+                          {signup.song.title} - {signup.song.artist}
+                        </p>
+                      )}
+                    </div>
+                    {signup.status === "no_show" && (
+                      <Badge variant="error" size="sm">No show</Badge>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
+        )}
       </div>
 
-      {/* Fixed Sign Up Button (if not signed up) */}
-      {!mySignup && (
-        <div className="fixed bottom-0 left-0 right-0 p-4" style={{ background: COLORS.bg }}>
-          <div className="max-w-lg mx-auto">
-            <Link href={`/signup/${event.id}`}>
-              <Button size="lg" className="w-full">
-                Sign Up to Perform
-              </Button>
-            </Link>
-          </div>
+      {/* Fixed Sign Up Button - always show for events that allow multiple signups */}
+      <div className="fixed bottom-0 left-0 right-0 p-4" style={{ background: COLORS.bg }}>
+        <div className="max-w-lg mx-auto">
+          <Link href={`/signup/${event.id}`}>
+            <Button size="lg" className="w-full">
+              {localMySignups.length > 0 ? "Sign Up Again" : "Sign Up to Perform"}
+            </Button>
+          </Link>
         </div>
-      )}
+      </div>
 
       {/* Cancel Confirmation Modal */}
-      {showCancelConfirm && (
+      {showCancelConfirm !== null && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: "rgba(10, 13, 18, 0.9)" }}>
           <Card className="w-full max-w-sm animate-slide-up">
             <h3 className="text-lg font-bold uppercase mb-2" style={{ color: COLORS.white }}>Leave the queue?</h3>
@@ -266,14 +326,14 @@ export function PerformerView({
               <Button
                 variant="secondary"
                 className="flex-1"
-                onClick={() => setShowCancelConfirm(false)}
+                onClick={() => setShowCancelConfirm(null)}
               >
                 Never mind
               </Button>
               <Button
                 variant="danger"
                 className="flex-1"
-                onClick={handleCancel}
+                onClick={() => handleCancel(showCancelConfirm)}
                 loading={isLoading}
               >
                 Yes, leave

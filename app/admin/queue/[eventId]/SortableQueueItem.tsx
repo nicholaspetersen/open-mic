@@ -121,6 +121,27 @@ export function SortableQueueItem({
             <Button
               size="sm"
               variant="ghost"
+              onClick={() => onStatusChange(signup.id, "on_deck")}
+              title="Move to On Deck"
+            >
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                style={{ color: COLORS.yellow }}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 10l7-7m0 0l7 7m-7-7v18"
+                />
+              </svg>
+            </Button>
+            <Button
+              size="sm"
+              variant="ghost"
               onClick={() => onStatusChange(signup.id, "no_show")}
               title="Mark as no-show"
             >

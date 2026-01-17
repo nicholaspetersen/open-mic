@@ -56,6 +56,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     if (body.venue !== undefined) updates.venue = body.venue;
     if (body.date !== undefined) updates.date = body.date;
     if (body.status !== undefined) updates.status = body.status;
+    if (body.allowMultipleSignups !== undefined) updates.allowMultipleSignups = body.allowMultipleSignups;
 
     if (body.code !== undefined) {
       // Check if code already exists for different event

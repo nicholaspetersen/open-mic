@@ -37,7 +37,7 @@ export function SignupForm({ eventId, eventCode, songs, existingSignup }: Signup
   // Initialize form state from existing signup or defaults
   const [name, setName] = useState(existingSignup?.performerName || "");
   const [performanceType, setPerformanceType] = useState<PerformanceType>(
-    existingSignup?.type || "with_band"
+    existingSignup?.type || "solo"
   );
   const [songMode, setSongMode] = useState<SongMode>(
     existingSignup?.requestText ? "request" : "library"
@@ -127,26 +127,6 @@ export function SignupForm({ eventId, eventCode, songs, existingSignup }: Signup
           <div className="grid grid-cols-2 gap-3">
             <button
               type="button"
-              onClick={() => setPerformanceType("with_band")}
-              className="p-4 text-left transition-all"
-              style={{
-                backgroundColor: COLORS.card,
-                border: performanceType === "with_band" 
-                  ? `1px solid ${COLORS.yellow}` 
-                  : `1px solid ${COLORS.border}`,
-              }}
-            >
-              <div className="flex items-center gap-2 mb-1">
-                <svg className="w-5 h-5" style={{ color: COLORS.yellow }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-                <span className="font-bold uppercase" style={{ color: COLORS.white }}>With Band</span>
-              </div>
-              <p className="text-sm" style={{ color: COLORS.gray }}>Our house band backs you up</p>
-            </button>
-
-            <button
-              type="button"
               onClick={() => {
                 setPerformanceType("solo");
                 setSelectedSong(null);
@@ -167,6 +147,26 @@ export function SignupForm({ eventId, eventCode, songs, existingSignup }: Signup
                 <span className="font-bold uppercase" style={{ color: COLORS.white }}>Solo</span>
               </div>
               <p className="text-sm" style={{ color: COLORS.gray }}>Just you on stage</p>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setPerformanceType("with_band")}
+              className="p-4 text-left transition-all"
+              style={{
+                backgroundColor: COLORS.card,
+                border: performanceType === "with_band" 
+                  ? `1px solid ${COLORS.yellow}` 
+                  : `1px solid ${COLORS.border}`,
+              }}
+            >
+              <div className="flex items-center gap-2 mb-1">
+                <svg className="w-5 h-5" style={{ color: COLORS.yellow }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                <span className="font-bold uppercase" style={{ color: COLORS.white }}>With Band</span>
+              </div>
+              <p className="text-sm" style={{ color: COLORS.gray }}>Our house band backs you up</p>
             </button>
           </div>
         </div>

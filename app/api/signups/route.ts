@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { signups, songs } from "@/lib/schema";
+import { signups, songs, events } from "@/lib/schema";
 import { eq, and, max, or } from "drizzle-orm";
 import { getOrCreateDevice, setDeviceCookie } from "@/lib/device";
 
@@ -36,24 +36,38 @@ export async function POST(request: NextRequest) {
     // Get device ID
     const deviceId = await getOrCreateDevice();
 
-    // Check if device already has an active signup for this event
-    const existingSignup = await db.query.signups.findFirst({
-      where: and(
-        eq(signups.eventId, eventId),
-        eq(signups.deviceId, deviceId),
-        or(
-          eq(signups.status, "waiting"),
-          eq(signups.status, "on_deck"),
-          eq(signups.status, "performing")
-        )
-      ),
+    // Get the event to check settings
+    const event = await db.query.events.findFirst({
+      where: eq(events.id, eventId),
     });
 
-    if (existingSignup) {
+    if (!event) {
       return NextResponse.json(
-        { error: "You already have an active signup for this event" },
-        { status: 400 }
+        { error: "Event not found" },
+        { status: 404 }
       );
+    }
+
+    // Check if device already has an active signup (only if multiple signups not allowed)
+    if (!event.allowMultipleSignups) {
+      const existingSignup = await db.query.signups.findFirst({
+        where: and(
+          eq(signups.eventId, eventId),
+          eq(signups.deviceId, deviceId),
+          or(
+            eq(signups.status, "waiting"),
+            eq(signups.status, "on_deck"),
+            eq(signups.status, "performing")
+          )
+        ),
+      });
+
+      if (existingSignup) {
+        return NextResponse.json(
+          { error: "You already have an active signup for this event" },
+          { status: 400 }
+        );
+      }
     }
 
     // If songId provided, verify it exists

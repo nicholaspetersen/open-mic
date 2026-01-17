@@ -11,6 +11,9 @@ export const events = sqliteTable("events", {
   status: text("status", { enum: ["draft", "active", "closed"] })
     .notNull()
     .default("draft"),
+  allowMultipleSignups: integer("allow_multiple_signups", { mode: "boolean" })
+    .notNull()
+    .default(true), // Default: allow multiple signups per device
   createdAt: text("created_at")
     .notNull()
     .$defaultFn(() => new Date().toISOString()),
