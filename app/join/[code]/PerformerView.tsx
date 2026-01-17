@@ -87,7 +87,7 @@ export function PerformerView({
   };
 
   // Format date
-  const formatDate = (date: Date) => {
+  const formatDate = (date: string | Date) => {
     return new Date(date).toLocaleDateString("en-US", {
       weekday: "long",
       month: "long",
