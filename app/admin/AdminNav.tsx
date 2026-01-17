@@ -3,6 +3,17 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
+// Color constants from Figma
+const COLORS = {
+  yellow: "#FAC515",
+  bg: "#0A0D12",
+  card: "#181D27",
+  border: "#252B37",
+  borderLight: "#414651",
+  gray: "#A4A7AE",
+  white: "#FFFFFF",
+};
+
 export function AdminNav() {
   const pathname = usePathname();
   const router = useRouter();
@@ -44,42 +55,46 @@ export function AdminNav() {
   };
 
   return (
-    <nav className="sticky top-0 z-40 bg-backdrop-950/80 backdrop-blur-lg border-b border-backdrop-800">
+    <nav className="sticky top-0 z-40" style={{ backgroundColor: COLORS.bg, borderBottom: `1px solid ${COLORS.border}` }}>
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex items-center justify-between h-14">
           {/* Logo */}
-          <Link href="/admin/events" className="font-bold text-lg text-stage-400">
+          <Link href="/admin/events" className="font-bold text-lg uppercase tracking-tight leading-none flex items-center" style={{ color: COLORS.yellow }}>
             Open Mic
           </Link>
 
           {/* Nav Links */}
           <div className="flex items-center gap-1">
-            {links.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  pathname.startsWith(link.href)
-                    ? "bg-stage-500/20 text-stage-400"
-                    : "text-backdrop-400 hover:text-backdrop-100 hover:bg-backdrop-800/50"
-                }`}
-              >
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+            {links.map((link) => {
+              const isActive = pathname.startsWith(link.href);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="flex items-center gap-2 px-3 py-2 text-sm font-bold uppercase transition-colors"
+                  style={{
+                    backgroundColor: isActive ? "rgba(250, 197, 21, 0.1)" : "transparent",
+                    color: isActive ? COLORS.yellow : COLORS.gray,
+                  }}
                 >
-                  {getIcon(link.icon)}
-                </svg>
-                <span className="hidden sm:inline">{link.label}</span>
-              </Link>
-            ))}
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    {getIcon(link.icon)}
+                  </svg>
+                  <span className="hidden sm:inline">{link.label}</span>
+                </Link>
+              );
+            })}
 
             {/* Logout */}
             <button
               onClick={handleLogout}
-              className="ml-2 px-3 py-2 rounded-lg text-sm text-backdrop-500 hover:text-backdrop-200 hover:bg-backdrop-800/50 transition-colors"
+              className="ml-2 px-3 py-2 text-sm uppercase transition-colors"
+              style={{ color: COLORS.borderLight }}
             >
               Logout
             </button>

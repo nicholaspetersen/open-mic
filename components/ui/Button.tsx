@@ -17,35 +17,74 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       loading = false,
       disabled,
       className = "",
+      style,
       ...props
     },
     ref
   ) => {
     const baseStyles =
-      "inline-flex items-center justify-center font-medium rounded-xl transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-stage-400 focus-visible:ring-offset-2 focus-visible:ring-offset-backdrop-950 disabled:opacity-50 disabled:cursor-not-allowed";
+      "inline-flex items-center justify-center font-bold uppercase tracking-tight transition-all focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed";
 
-    const variants = {
-      primary:
-        "bg-gradient-to-r from-stage-500 to-stage-600 text-white hover:from-stage-400 hover:to-stage-500 active:from-stage-600 active:to-stage-700 shadow-lg shadow-stage-500/25",
-      secondary:
-        "bg-backdrop-800 text-backdrop-100 hover:bg-backdrop-700 active:bg-backdrop-900 border border-backdrop-700",
-      ghost:
-        "text-backdrop-300 hover:text-backdrop-100 hover:bg-backdrop-800/50 active:bg-backdrop-800",
-      danger:
-        "bg-red-500/20 text-red-400 hover:bg-red-500/30 active:bg-red-500/40 border border-red-500/30",
+    const variantStyles = {
+      primary: "",
+      secondary: "",
+      ghost: "",
+      danger: "",
     };
 
     const sizes = {
-      sm: "text-sm py-2 px-4 min-h-[36px]",
-      md: "text-base py-3 px-6 min-h-[48px]",
-      lg: "text-lg py-4 px-8 min-h-[56px]",
+      sm: "text-xs py-2 px-4 min-h-[36px]",
+      md: "text-sm py-3 px-6 min-h-[48px]",
+      lg: "text-base py-3 px-4 min-h-[48px]",
+    };
+
+    // Use inline styles for exact color control
+    const variantInlineStyles: Record<string, React.CSSProperties> = {
+      primary: {
+        backgroundColor: "#FAC515",
+        color: "#0A0D12",
+        boxShadow: "1px 1px 0px 0px #C09800, 2px 2px 0px 0px #C09800, 3px 3px 0px 0px #C09800, 4px 4px 0px 0px #C09800",
+      },
+      secondary: {
+        backgroundColor: "#181D27",
+        color: "#FFFFFF",
+        border: "1px solid #252B37",
+      },
+      ghost: {
+        backgroundColor: "transparent",
+        color: "#A4A7AE",
+      },
+      danger: {
+        backgroundColor: "#181D27",
+        color: "#f87171",
+        border: "1px solid rgba(248, 113, 113, 0.3)",
+      },
     };
 
     return (
       <button
         ref={ref}
         disabled={disabled || loading}
-        className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
+        className={`${baseStyles} ${variantStyles[variant]} ${sizes[size]} ${className}`}
+        style={{ ...variantInlineStyles[variant], ...style }}
+        onMouseDown={(e) => {
+          if (variant === "primary") {
+            e.currentTarget.style.boxShadow = "none";
+            e.currentTarget.style.transform = "translate(4px, 4px)";
+          }
+        }}
+        onMouseUp={(e) => {
+          if (variant === "primary") {
+            e.currentTarget.style.boxShadow = "1px 1px 0px 0px #C09800, 2px 2px 0px 0px #C09800, 3px 3px 0px 0px #C09800, 4px 4px 0px 0px #C09800";
+            e.currentTarget.style.transform = "none";
+          }
+        }}
+        onMouseLeave={(e) => {
+          if (variant === "primary") {
+            e.currentTarget.style.boxShadow = "1px 1px 0px 0px #C09800, 2px 2px 0px 0px #C09800, 3px 3px 0px 0px #C09800, 4px 4px 0px 0px #C09800";
+            e.currentTarget.style.transform = "none";
+          }
+        }}
         {...props}
       >
         {loading ? (

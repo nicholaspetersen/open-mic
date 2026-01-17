@@ -1,8 +1,19 @@
 "use client";
 
 import { useState, useMemo, useEffect, useRef } from "react";
-import { Input, Badge } from "@/components/ui";
+import { Badge } from "@/components/ui";
 import type { Song } from "@/lib/schema";
+
+// Color constants from Figma
+const COLORS = {
+  yellow: "#FAC515",
+  bg: "#0A0D12",
+  card: "#181D27",
+  border: "#252B37",
+  borderLight: "#414651",
+  gray: "#A4A7AE",
+  white: "#FFFFFF",
+};
 
 interface SongPickerProps {
   songs: Song[];
@@ -70,14 +81,15 @@ export function SongPicker({
   }, [filteredSongs]);
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-backdrop-950">
+    <div className="fixed inset-0 z-50 flex flex-col" style={{ background: COLORS.bg }}>
       {/* Header */}
-      <div className="flex-none p-4 border-b border-backdrop-800">
+      <div className="flex-none p-4" style={{ borderBottom: `1px solid ${COLORS.border}` }}>
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold">Pick a Song</h2>
+          <h2 className="text-xl font-bold uppercase" style={{ color: COLORS.white }}>Pick a Song</h2>
           <button
             onClick={onClose}
-            className="p-2 -mr-2 text-backdrop-400 hover:text-backdrop-100 transition-colors"
+            className="p-2 -mr-2 transition-colors"
+            style={{ color: COLORS.gray }}
           >
             <svg
               className="w-6 h-6"
@@ -98,7 +110,8 @@ export function SongPicker({
         {/* Search */}
         <div className="relative">
           <svg
-            className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-backdrop-500"
+            className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5"
+            style={{ color: COLORS.borderLight }}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -116,12 +129,18 @@ export function SongPicker({
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search songs or artists..."
-            className="w-full pl-12 pr-4 py-3 bg-backdrop-800/50 border border-backdrop-700 rounded-xl text-backdrop-100 placeholder-backdrop-500 focus:outline-none focus:ring-2 focus:ring-stage-400 focus:border-transparent"
+            className="w-full pl-12 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#FAC515]"
+            style={{
+              backgroundColor: COLORS.card,
+              border: `1px solid ${COLORS.border}`,
+              color: COLORS.white,
+            }}
           />
           {search && (
             <button
               onClick={() => setSearch("")}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-backdrop-500 hover:text-backdrop-300"
+              className="absolute right-4 top-1/2 -translate-y-1/2"
+              style={{ color: COLORS.borderLight }}
             >
               <svg
                 className="w-5 h-5"
@@ -146,11 +165,12 @@ export function SongPicker({
             <button
               key={level}
               onClick={() => setDifficulty(difficulty === level ? null : level)}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium capitalize transition-all ${
-                difficulty === level
-                  ? "bg-stage-500 text-white"
-                  : "bg-backdrop-800 text-backdrop-400 hover:text-backdrop-200"
-              }`}
+              className="px-3 py-1.5 text-sm font-bold uppercase transition-all"
+              style={{
+                backgroundColor: difficulty === level ? COLORS.yellow : COLORS.card,
+                color: difficulty === level ? COLORS.bg : COLORS.gray,
+                border: difficulty === level ? "none" : `1px solid ${COLORS.border}`,
+              }}
             >
               {level}
             </button>
@@ -161,10 +181,10 @@ export function SongPicker({
       {/* Song List */}
       <div className="flex-1 overflow-y-auto p-4">
         {filteredSongs.length === 0 ? (
-          <div className="text-center py-12 text-backdrop-500">
+          <div className="text-center py-12" style={{ color: COLORS.gray }}>
             <p>No songs found</p>
             {search && (
-              <p className="text-sm mt-1">
+              <p className="text-sm mt-1" style={{ color: COLORS.borderLight }}>
                 Try a different search or request this song!
               </p>
             )}
@@ -173,7 +193,10 @@ export function SongPicker({
           <div className="space-y-6">
             {groupedSongs.map(([artist, artistSongs]) => (
               <div key={artist}>
-                <h3 className="text-sm font-medium text-backdrop-500 mb-2 sticky top-0 bg-backdrop-950 py-1">
+                <h3 
+                  className="text-sm font-bold uppercase mb-2 sticky top-0 py-1"
+                  style={{ backgroundColor: COLORS.bg, color: COLORS.gray }}
+                >
                   {artist}
                 </h3>
                 <div className="space-y-1">
@@ -181,14 +204,16 @@ export function SongPicker({
                     <button
                       key={song.id}
                       onClick={() => onSelect(song)}
-                      className={`w-full p-3 rounded-xl text-left transition-all ${
-                        selectedSong?.id === song.id
-                          ? "bg-stage-500/20 border border-stage-500"
-                          : "bg-backdrop-800/30 hover:bg-backdrop-800 border border-transparent"
-                      }`}
+                      className="w-full p-3 text-left transition-all"
+                      style={{
+                        backgroundColor: COLORS.card,
+                        border: selectedSong?.id === song.id 
+                          ? `1px solid ${COLORS.yellow}` 
+                          : `1px solid ${COLORS.border}`,
+                      }}
                     >
                       <div className="flex items-center justify-between">
-                        <span className="font-medium">{song.title}</span>
+                        <span className="font-bold" style={{ color: COLORS.white }}>{song.title}</span>
                         <div className="flex items-center gap-2">
                           {song.key && (
                             <Badge variant="info" size="sm">
@@ -212,7 +237,7 @@ export function SongPicker({
                         </div>
                       </div>
                       {song.notes && (
-                        <p className="text-sm text-backdrop-500 mt-1 truncate">
+                        <p className="text-sm mt-1 truncate" style={{ color: COLORS.gray }}>
                           {song.notes}
                         </p>
                       )}
@@ -226,7 +251,10 @@ export function SongPicker({
       </div>
 
       {/* Footer with count */}
-      <div className="flex-none p-4 border-t border-backdrop-800 text-center text-sm text-backdrop-500">
+      <div 
+        className="flex-none p-4 text-center text-sm"
+        style={{ borderTop: `1px solid ${COLORS.border}`, color: COLORS.gray }}
+      >
         {filteredSongs.length} of {songs.length} songs
       </div>
     </div>

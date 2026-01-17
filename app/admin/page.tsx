@@ -2,6 +2,14 @@ import { redirect } from "next/navigation";
 import { isAdmin } from "@/lib/auth";
 import { AdminLogin } from "./AdminLogin";
 
+// Color constants from Figma
+const COLORS = {
+  yellow: "#FAC515",
+  bg: "#0A0D12",
+  gray: "#A4A7AE",
+  white: "#FFFFFF",
+};
+
 export default async function AdminPage() {
   const authenticated = await isAdmin();
 
@@ -10,26 +18,22 @@ export default async function AdminPage() {
   }
 
   return (
-    <main className="min-h-dvh flex flex-col items-center justify-center p-6">
+    <main className="min-h-dvh flex flex-col items-center justify-center p-6" style={{ background: COLORS.bg }}>
       <div className="max-w-md w-full mx-auto animate-slide-up">
         <div className="text-center mb-8">
-          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-backdrop-800 flex items-center justify-center">
-            <svg
-              className="w-8 h-8 text-stage-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-              />
-            </svg>
-          </div>
-          <h1 className="text-2xl font-bold mb-2">Host Dashboard</h1>
-          <p className="text-backdrop-400">Enter the passcode to continue</p>
+          <h1 
+            className="text-3xl font-bold uppercase tracking-tight mb-2"
+            style={{ color: COLORS.yellow }}
+          >
+            Open Mic
+          </h1>
+          <h2 
+            className="text-xl font-bold uppercase mb-2"
+            style={{ color: COLORS.white }}
+          >
+            Host Dashboard
+          </h2>
+          <p style={{ color: COLORS.gray }}>Enter the passcode to continue</p>
         </div>
 
         <AdminLogin />

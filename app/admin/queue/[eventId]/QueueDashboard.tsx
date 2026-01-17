@@ -22,6 +22,17 @@ import { SortableQueueItem } from "./SortableQueueItem";
 import { RequestsPanel } from "./RequestsPanel";
 import type { Signup, Song } from "@/lib/schema";
 
+// Color constants from Figma
+const COLORS = {
+  yellow: "#FAC515",
+  bg: "#0A0D12",
+  card: "#181D27",
+  border: "#252B37",
+  borderLight: "#414651",
+  gray: "#A4A7AE",
+  white: "#FFFFFF",
+};
+
 type SignupWithSong = Signup & { song: Song | null };
 
 interface QueueDashboardProps {
@@ -140,19 +151,19 @@ export function QueueDashboard({
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {/* Now Playing */}
         <Card variant={currentPerformer ? "highlight" : "default"} padding="md">
-          <p className="text-xs uppercase tracking-wider text-backdrop-500 mb-2">
+          <p className="text-xs uppercase tracking-wider mb-2 font-bold" style={{ color: COLORS.gray }}>
             Now Playing
           </p>
           {currentPerformer ? (
             <div>
-              <p className="text-xl font-bold">{currentPerformer.performerName}</p>
+              <p className="text-xl font-bold uppercase" style={{ color: COLORS.white }}>{currentPerformer.performerName}</p>
               {currentPerformer.song && (
-                <p className="text-backdrop-300">
+                <p style={{ color: COLORS.gray }}>
                   {currentPerformer.song.title} - {currentPerformer.song.artist}
                 </p>
               )}
               {currentPerformer.requestText && (
-                <p className="text-backdrop-300">{currentPerformer.requestText}</p>
+                <p style={{ color: COLORS.gray }}>{currentPerformer.requestText}</p>
               )}
               <Button
                 size="sm"
@@ -164,25 +175,25 @@ export function QueueDashboard({
               </Button>
             </div>
           ) : (
-            <p className="text-backdrop-500">No one on stage</p>
+            <p style={{ color: COLORS.borderLight }}>No one on stage</p>
           )}
         </Card>
 
         {/* On Deck */}
         <Card variant={onDeck ? "default" : "ghost"} padding="md">
-          <p className="text-xs uppercase tracking-wider text-backdrop-500 mb-2">
+          <p className="text-xs uppercase tracking-wider mb-2 font-bold" style={{ color: COLORS.gray }}>
             On Deck
           </p>
           {onDeck ? (
             <div>
-              <p className="text-xl font-bold">{onDeck.performerName}</p>
+              <p className="text-xl font-bold uppercase" style={{ color: COLORS.white }}>{onDeck.performerName}</p>
               {onDeck.song && (
-                <p className="text-backdrop-300">
+                <p style={{ color: COLORS.gray }}>
                   {onDeck.song.title} - {onDeck.song.artist}
                 </p>
               )}
               {onDeck.requestText && (
-                <p className="text-backdrop-300">{onDeck.requestText}</p>
+                <p style={{ color: COLORS.gray }}>{onDeck.requestText}</p>
               )}
               <Button
                 size="sm"
@@ -193,7 +204,7 @@ export function QueueDashboard({
               </Button>
             </div>
           ) : (
-            <p className="text-backdrop-500">No one on deck</p>
+            <p style={{ color: COLORS.borderLight }}>No one on deck</p>
           )}
         </Card>
       </div>
@@ -202,16 +213,21 @@ export function QueueDashboard({
       {pendingRequests.length > 0 && (
         <button
           onClick={() => setShowRequests(true)}
-          className="w-full p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl flex items-center justify-between hover:bg-amber-500/20 transition-colors"
+          className="w-full p-4 flex items-center justify-between transition-colors"
+          style={{ 
+            backgroundColor: "rgba(250, 197, 21, 0.1)", 
+            border: `1px solid ${COLORS.yellow}` 
+          }}
         >
           <div className="flex items-center gap-3">
             <Badge variant="warning">{pendingRequests.length}</Badge>
-            <span className="text-amber-400 font-medium">
+            <span className="font-bold uppercase" style={{ color: COLORS.yellow }}>
               Pending song request{pendingRequests.length === 1 ? "" : "s"}
             </span>
           </div>
           <svg
-            className="w-5 h-5 text-amber-400"
+            className="w-5 h-5"
+            style={{ color: COLORS.yellow }}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -228,17 +244,17 @@ export function QueueDashboard({
 
       {/* Queue */}
       <div>
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-lg font-semibold">
+        <div className="flex items-center justify-between mb-3 pb-2" style={{ borderBottom: `1px solid ${COLORS.border}` }}>
+          <h2 className="text-lg font-bold uppercase" style={{ color: COLORS.yellow }}>
             Queue ({waitingQueue.length})
           </h2>
-          <p className="text-sm text-backdrop-500">Drag to reorder</p>
+          <p className="text-sm uppercase" style={{ color: COLORS.gray }}>Drag to reorder</p>
         </div>
 
         {waitingQueue.length === 0 ? (
           <Card className="text-center py-8">
-            <p className="text-backdrop-500">No one in queue yet</p>
-            <p className="text-sm text-backdrop-600 mt-1">
+            <p style={{ color: COLORS.gray }}>No one in queue yet</p>
+            <p className="text-sm mt-1" style={{ color: COLORS.borderLight }}>
               Share the signup link to get started
             </p>
           </Card>
@@ -270,7 +286,7 @@ export function QueueDashboard({
       {/* Completed */}
       {completedSignups.length > 0 && (
         <div>
-          <h2 className="text-lg font-semibold mb-3 text-backdrop-500">
+          <h2 className="text-lg font-bold uppercase mb-3" style={{ color: COLORS.gray }}>
             Completed ({completedSignups.length})
           </h2>
           <div className="space-y-2 opacity-60">
@@ -278,9 +294,9 @@ export function QueueDashboard({
               <Card key={signup.id} padding="sm" variant="ghost">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-medium">{signup.performerName}</p>
+                    <p className="font-bold" style={{ color: COLORS.white }}>{signup.performerName}</p>
                     {signup.song && (
-                      <p className="text-sm text-backdrop-500">
+                      <p className="text-sm" style={{ color: COLORS.gray }}>
                         {signup.song.title}
                       </p>
                     )}

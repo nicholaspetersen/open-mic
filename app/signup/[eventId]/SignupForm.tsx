@@ -7,6 +7,17 @@ import { Button, Input, Card, Badge } from "@/components/ui";
 import type { Song, Signup } from "@/lib/schema";
 import { SongPicker } from "@/components/SongPicker";
 
+// Color constants from Figma
+const COLORS = {
+  yellow: "#FAC515",
+  bg: "#0A0D12",
+  card: "#181D27",
+  border: "#252B37",
+  borderLight: "#414651",
+  gray: "#A4A7AE",
+  white: "#FFFFFF",
+};
+
 type SignupWithSong = Signup & { song: Song | null };
 
 interface SignupFormProps {
@@ -107,26 +118,31 @@ export function SignupForm({ eventId, eventCode, songs, existingSignup }: Signup
 
         {/* Performance Type */}
         <div>
-          <label className="block text-sm font-medium text-backdrop-200 mb-3">
+          <label 
+            className="block text-sm font-bold uppercase mb-3"
+            style={{ color: COLORS.gray }}
+          >
             How do you want to perform?
           </label>
           <div className="grid grid-cols-2 gap-3">
             <button
               type="button"
               onClick={() => setPerformanceType("with_band")}
-              className={`p-4 rounded-xl border-2 text-left transition-all ${
-                performanceType === "with_band"
-                  ? "border-stage-500 bg-stage-500/10"
-                  : "border-backdrop-700 bg-backdrop-800/50 hover:border-backdrop-600"
-              }`}
+              className="p-4 text-left transition-all"
+              style={{
+                backgroundColor: COLORS.card,
+                border: performanceType === "with_band" 
+                  ? `1px solid ${COLORS.yellow}` 
+                  : `1px solid ${COLORS.border}`,
+              }}
             >
               <div className="flex items-center gap-2 mb-1">
-                <svg className="w-5 h-5 text-stage-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5" style={{ color: COLORS.yellow }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
-                <span className="font-medium">With Band</span>
+                <span className="font-bold uppercase" style={{ color: COLORS.white }}>With Band</span>
               </div>
-              <p className="text-sm text-backdrop-400">Our house band backs you up</p>
+              <p className="text-sm" style={{ color: COLORS.gray }}>Our house band backs you up</p>
             </button>
 
             <button
@@ -136,19 +152,21 @@ export function SignupForm({ eventId, eventCode, songs, existingSignup }: Signup
                 setSelectedSong(null);
                 setRequestText("");
               }}
-              className={`p-4 rounded-xl border-2 text-left transition-all ${
-                performanceType === "solo"
-                  ? "border-stage-500 bg-stage-500/10"
-                  : "border-backdrop-700 bg-backdrop-800/50 hover:border-backdrop-600"
-              }`}
+              className="p-4 text-left transition-all"
+              style={{
+                backgroundColor: COLORS.card,
+                border: performanceType === "solo" 
+                  ? `1px solid ${COLORS.yellow}` 
+                  : `1px solid ${COLORS.border}`,
+              }}
             >
               <div className="flex items-center gap-2 mb-1">
-                <svg className="w-5 h-5 text-stage-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5" style={{ color: COLORS.yellow }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
-                <span className="font-medium">Solo</span>
+                <span className="font-bold uppercase" style={{ color: COLORS.white }}>Solo</span>
               </div>
-              <p className="text-sm text-backdrop-400">Just you on stage</p>
+              <p className="text-sm" style={{ color: COLORS.gray }}>Just you on stage</p>
             </button>
           </div>
         </div>
@@ -161,22 +179,24 @@ export function SignupForm({ eventId, eventCode, songs, existingSignup }: Signup
               <button
                 type="button"
                 onClick={() => setSongMode("library")}
-                className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all ${
-                  songMode === "library"
-                    ? "bg-stage-500 text-white"
-                    : "bg-backdrop-800 text-backdrop-300 hover:text-backdrop-100"
-                }`}
+                className="flex-1 py-2 px-4 text-sm font-bold uppercase transition-all"
+                style={{
+                  backgroundColor: songMode === "library" ? COLORS.yellow : COLORS.card,
+                  color: songMode === "library" ? COLORS.bg : COLORS.gray,
+                  border: songMode === "library" ? "none" : `1px solid ${COLORS.border}`,
+                }}
               >
                 Pick from Library
               </button>
               <button
                 type="button"
                 onClick={() => setSongMode("request")}
-                className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all ${
-                  songMode === "request"
-                    ? "bg-stage-500 text-white"
-                    : "bg-backdrop-800 text-backdrop-300 hover:text-backdrop-100"
-                }`}
+                className="flex-1 py-2 px-4 text-sm font-bold uppercase transition-all"
+                style={{
+                  backgroundColor: songMode === "request" ? COLORS.yellow : COLORS.card,
+                  color: songMode === "request" ? COLORS.bg : COLORS.gray,
+                  border: songMode === "request" ? "none" : `1px solid ${COLORS.border}`,
+                }}
               >
                 Request a Song
               </button>
@@ -187,21 +207,25 @@ export function SignupForm({ eventId, eventCode, songs, existingSignup }: Signup
                 <button
                   type="button"
                   onClick={() => setShowSongPicker(true)}
-                  className="w-full p-4 rounded-xl border-2 border-dashed border-backdrop-600 hover:border-stage-500/50 hover:bg-backdrop-800/50 transition-all text-left"
+                  className="w-full p-4 text-left transition-all"
+                  style={{
+                    backgroundColor: COLORS.card,
+                    border: `2px dashed ${COLORS.borderLight}`,
+                  }}
                 >
                   {selectedSong ? (
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="font-medium text-backdrop-100">{selectedSong.title}</p>
-                        <p className="text-sm text-backdrop-400">{selectedSong.artist}</p>
+                        <p className="font-bold" style={{ color: COLORS.white }}>{selectedSong.title}</p>
+                        <p className="text-sm" style={{ color: COLORS.gray }}>{selectedSong.artist}</p>
                       </div>
                       <div className="flex items-center gap-2">
                         {selectedSong.key && <Badge variant="info">{selectedSong.key}</Badge>}
-                        <span className="text-backdrop-500">Change</span>
+                        <span className="text-sm uppercase" style={{ color: COLORS.gray }}>Change</span>
                       </div>
                     </div>
                   ) : (
-                    <div className="flex items-center gap-3 text-backdrop-400">
+                    <div className="flex items-center gap-3" style={{ color: COLORS.gray }}>
                       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                       </svg>
@@ -226,9 +250,12 @@ export function SignupForm({ eventId, eventCode, songs, existingSignup }: Signup
 
         {/* Notes */}
         <div>
-          <label className="block text-sm font-medium text-backdrop-200 mb-2">
+          <label 
+            className="block text-sm font-bold uppercase mb-2"
+            style={{ color: COLORS.gray }}
+          >
             Notes {performanceType === "with_band" ? "for the band" : ""}{" "}
-            <span className="text-backdrop-500">(optional)</span>
+            <span className="normal-case" style={{ color: COLORS.borderLight }}>(optional)</span>
           </label>
           <textarea
             value={notes}
@@ -239,14 +266,19 @@ export function SignupForm({ eventId, eventCode, songs, existingSignup }: Signup
                 : "What are you performing? (song, comedy, poetry, etc.)"
             }
             rows={3}
-            className="w-full px-4 py-3 bg-backdrop-800/50 border border-backdrop-700 rounded-xl text-backdrop-100 placeholder-backdrop-500 focus:outline-none focus:ring-2 focus:ring-stage-400 focus:border-transparent transition-all resize-none"
+            className="w-full px-4 py-3 transition-all resize-none focus:outline-none focus:ring-2 focus:ring-[#FAC515]"
+            style={{
+              backgroundColor: COLORS.card,
+              border: `1px solid ${COLORS.border}`,
+              color: COLORS.white,
+            }}
           />
         </div>
 
         {/* Error */}
         {error && (
           <Card variant="ghost" padding="sm">
-            <p className="text-red-400 text-sm">{error}</p>
+            <p className="text-sm" style={{ color: "#f87171" }}>{error}</p>
           </Card>
         )}
 
@@ -267,7 +299,7 @@ export function SignupForm({ eventId, eventCode, songs, existingSignup }: Signup
         </div>
 
         {songMode === "request" && performanceType === "with_band" && !isEditing && (
-          <p className="text-center text-sm text-backdrop-500">
+          <p className="text-center text-sm" style={{ color: COLORS.gray }}>
             Your request will be reviewed by the host
           </p>
         )}

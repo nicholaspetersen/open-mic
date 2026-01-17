@@ -5,6 +5,15 @@ import { notFound, redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { SignupForm } from "./SignupForm";
 
+// Color constants from Figma
+const COLORS = {
+  yellow: "#FAC515",
+  bg: "#0A0D12",
+  border: "#252B37",
+  gray: "#A4A7AE",
+  white: "#FFFFFF",
+};
+
 interface SignupPageProps {
   params: Promise<{ eventId: string }>;
   searchParams: Promise<{ edit?: string }>;
@@ -62,15 +71,23 @@ export default async function SignupPage({ params, searchParams }: SignupPagePro
   }
 
   return (
-    <main className="min-h-dvh p-4 pb-8">
-      <div className="max-w-lg mx-auto">
-        {/* Header */}
-        <header className="text-center pt-4 pb-6">
-          <h1 className="text-2xl font-bold mb-1">
+    <main className="min-h-dvh" style={{ background: COLORS.bg }}>
+      {/* Header */}
+      <header className="px-4 py-3" style={{ borderBottom: `1px solid ${COLORS.border}` }}>
+        <p className="font-bold text-lg uppercase tracking-tight" style={{ color: COLORS.yellow }}>Open Mic</p>
+      </header>
+
+      <div className="max-w-lg mx-auto p-4 pb-8">
+        {/* Title */}
+        <div className="pt-2 pb-6">
+          <h1 
+            className="text-2xl font-bold uppercase tracking-tight mb-1"
+            style={{ color: COLORS.white }}
+          >
             {existingSignup ? "Edit Your Signup" : "Sign Up to Perform"}
           </h1>
-          <p className="text-backdrop-400">{event.name}</p>
-        </header>
+          <p style={{ color: COLORS.gray }}>{event.name}</p>
+        </div>
 
         <SignupForm
           eventId={event.id}

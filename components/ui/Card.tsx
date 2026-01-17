@@ -13,23 +13,32 @@ export function Card({
   variant = "default",
   padding = "md",
 }: CardProps) {
-  const variants = {
-    default: "bg-backdrop-800/50 border border-backdrop-700",
-    highlight:
-      "bg-gradient-to-br from-stage-500/10 to-stage-600/5 border border-stage-500/30",
-    ghost: "bg-transparent",
+  // Use inline styles for exact color control from Figma
+  const variantStyles: Record<string, React.CSSProperties> = {
+    default: {
+      backgroundColor: "#181D27",
+      border: "1px solid #252B37",
+    },
+    highlight: {
+      backgroundColor: "#181D27",
+      border: "1px solid #FAC515",
+    },
+    ghost: {
+      backgroundColor: "transparent",
+    },
   };
 
   const paddings = {
     none: "",
-    sm: "p-3",
-    md: "p-4 sm:p-6",
-    lg: "p-6 sm:p-8",
+    sm: "px-3 py-2",
+    md: "p-4",
+    lg: "p-6",
   };
 
   return (
     <div
-      className={`rounded-2xl ${variants[variant]} ${paddings[padding]} ${className}`}
+      className={`${paddings[padding]} ${className}`}
+      style={variantStyles[variant]}
     >
       {children}
     </div>

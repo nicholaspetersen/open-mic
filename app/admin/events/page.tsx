@@ -4,8 +4,18 @@ import { isAdmin } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { events, signups } from "@/lib/schema";
 import { eq, desc, count } from "drizzle-orm";
-import { Card, Badge, Button } from "@/components/ui";
+import { Card, Badge } from "@/components/ui";
 import { CreateEventButton } from "./CreateEventButton";
+
+// Color constants from Figma
+const COLORS = {
+  yellow: "#FAC515",
+  bg: "#0A0D12",
+  card: "#181D27",
+  border: "#252B37",
+  gray: "#A4A7AE",
+  white: "#FFFFFF",
+};
 
 export default async function EventsPage() {
   const authenticated = await isAdmin();
@@ -31,15 +41,15 @@ export default async function EventsPage() {
   };
 
   return (
-    <main className="max-w-4xl mx-auto p-4 pb-8">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">Events</h1>
+    <main className="max-w-4xl mx-auto p-4 pb-8" style={{ background: COLORS.bg }}>
+      <div className="flex items-center justify-between mb-6 pb-4" style={{ borderBottom: `1px solid ${COLORS.border}` }}>
+        <h1 className="text-2xl font-bold uppercase" style={{ color: COLORS.white }}>Events</h1>
         <CreateEventButton />
       </div>
 
       {allEvents.length === 0 ? (
         <Card className="text-center py-12">
-          <p className="text-backdrop-400 mb-4">No events yet</p>
+          <p className="mb-4" style={{ color: COLORS.gray }}>No events yet</p>
           <CreateEventButton />
         </Card>
       ) : (
@@ -54,16 +64,16 @@ export default async function EventsPage() {
             });
 
             return (
-              <Card key={event.id} className="hover:bg-backdrop-800/70 transition-colors">
+              <Card key={event.id}>
                 <div className="flex items-center justify-between">
                   <Link href={`/admin/queue/${event.id}`} className="flex-1">
                     <div className="flex items-center gap-3 mb-1">
-                      <h2 className="font-semibold text-lg">{event.name}</h2>
+                      <h2 className="font-bold text-lg uppercase" style={{ color: COLORS.white }}>{event.name}</h2>
                       <Badge variant={status.variant} size="sm">
                         {status.label}
                       </Badge>
                     </div>
-                    <div className="flex items-center gap-4 text-sm text-backdrop-400">
+                    <div className="flex items-center gap-4 text-sm" style={{ color: COLORS.gray }}>
                       <span>{formattedDate}</span>
                       {event.venue && <span>• {event.venue}</span>}
                       <span>• {signupCount} signup{signupCount === 1 ? "" : "s"}</span>
@@ -73,8 +83,9 @@ export default async function EventsPage() {
                     {event.status === "active" && (
                       <Link
                         href={`/admin/events/${event.id}/qr`}
-                        className="p-2 text-backdrop-400 hover:text-stage-400 hover:bg-backdrop-700 rounded-lg transition-colors"
+                        className="p-2 transition-colors"
                         title="QR Code"
+                        style={{ color: COLORS.gray }}
                       >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h2M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
@@ -83,7 +94,8 @@ export default async function EventsPage() {
                     )}
                     <Link
                       href={`/admin/queue/${event.id}`}
-                      className="p-2 text-backdrop-400 hover:text-backdrop-100"
+                      className="p-2"
+                      style={{ color: COLORS.gray }}
                     >
                       <svg
                         className="w-5 h-5"
@@ -109,10 +121,10 @@ export default async function EventsPage() {
 
       {/* QR Code hint */}
       {allEvents.some(({ event }) => event.status === "active") && (
-        <Card variant="ghost" className="mt-8 text-center text-sm text-backdrop-500">
+        <Card variant="ghost" className="mt-8 text-center text-sm" style={{ color: COLORS.gray }}>
           <p>
             Share the QR code or link:{" "}
-            <code className="bg-backdrop-800 px-2 py-1 rounded">
+            <code className="px-2 py-1" style={{ backgroundColor: COLORS.card, border: `1px solid ${COLORS.border}` }}>
               {process.env.NEXT_PUBLIC_BASE_URL}/join/[code]
             </code>
           </p>

@@ -1,55 +1,40 @@
 @import "tailwindcss";
 
-/* Custom fonts */
+/* Third Man Records aesthetic - minimal, dark, bold yellow */
+
+/* Custom fonts - Inter for clean, bold typography */
 @font-face {
-  font-family: "Outfit";
+  font-family: "Inter";
   font-style: normal;
   font-weight: 100 900;
   font-display: swap;
-  src: url("https://fonts.gstatic.com/s/outfit/v11/QGYvz_MVcBeNP4NJtEtqUYLknw.woff2")
+  src: url("https://fonts.gstatic.com/s/inter/v18/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2")
     format("woff2");
 }
 
 :root {
-  --font-display: "Outfit", system-ui, sans-serif;
-  --font-body: "Outfit", system-ui, sans-serif;
-}
-
-/* Custom theme colors via Tailwind v4 */
-@theme {
-  /* Stage lighting warmth palette */
-  --color-stage-50: #fef7ee;
-  --color-stage-100: #fdedd3;
-  --color-stage-200: #fad7a5;
-  --color-stage-300: #f6bb6d;
-  --color-stage-400: #f19532;
-  --color-stage-500: #ed7712;
-  --color-stage-600: #de5c08;
-  --color-stage-700: #b84409;
-  --color-stage-800: #93360f;
-  --color-stage-900: #772e10;
-  --color-stage-950: #401506;
-
-  /* Dark backdrop palette */
-  --color-backdrop-50: #f6f6f9;
-  --color-backdrop-100: #ededf1;
-  --color-backdrop-200: #d7d8e0;
-  --color-backdrop-300: #b4b6c5;
-  --color-backdrop-400: #8b8ea5;
-  --color-backdrop-500: #6c6f8a;
-  --color-backdrop-600: #575972;
-  --color-backdrop-700: #47485d;
-  --color-backdrop-800: #3d3e4f;
-  --color-backdrop-900: #1a1a24;
-  --color-backdrop-950: #0f0f15;
+  --font-display: "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  
+  /* Third Man color palette - exact from Figma */
+  --tm-yellow: #FAC515;
+  --tm-yellow-dark: #C09800;
+  --tm-950: #0A0D12;
+  --tm-900: #181D27;
+  --tm-800: #252B37;
+  --tm-700: #414651;
+  --tm-400: #A4A7AE;
+  --tm-white: #FFFFFF;
 }
 
 /* Base styles */
 body {
   font-family: var(--font-body);
-  background: linear-gradient(180deg, #0f0f15 0%, #1a1a24 100%);
-  color: #f6f6f9;
+  background: var(--tm-950);
+  color: var(--tm-white);
   min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Touch-friendly tap targets */
@@ -63,7 +48,7 @@ textarea {
 
 /* Focus states */
 :focus-visible {
-  outline: 2px solid #f19532;
+  outline: 2px solid var(--tm-yellow);
   outline-offset: 2px;
 }
 
@@ -74,8 +59,8 @@ html {
 
 /* Selection color */
 ::selection {
-  background-color: #f1953280;
-  color: white;
+  background-color: #FAC51580;
+  color: var(--tm-950);
 }
 
 /* Custom scrollbar */
@@ -85,16 +70,16 @@ html {
 }
 
 ::-webkit-scrollbar-track {
-  background: #1a1a24;
+  background: var(--tm-950);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #47485d;
-  border-radius: 4px;
+  background: var(--tm-700);
+  border-radius: 0;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #575972;
+  background: var(--tm-400);
 }
 
 /* Animations */
@@ -123,10 +108,10 @@ html {
 @keyframes pulse-glow {
   0%,
   100% {
-    box-shadow: 0 0 20px 2px rgba(241, 149, 50, 0.3);
+    box-shadow: 0 0 20px 2px rgba(250, 197, 21, 0.3);
   }
   50% {
-    box-shadow: 0 0 30px 4px rgba(241, 149, 50, 0.5);
+    box-shadow: 0 0 30px 4px rgba(250, 197, 21, 0.5);
   }
 }
 

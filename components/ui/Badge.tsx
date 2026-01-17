@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 
 interface BadgeProps {
   children: ReactNode;
-  variant?: "default" | "success" | "warning" | "error" | "info";
+  variant?: "default" | "success" | "warning" | "error" | "info" | "you";
   size?: "sm" | "md";
   className?: string;
 }
@@ -13,22 +13,49 @@ export function Badge({
   size = "sm",
   className = "",
 }: BadgeProps) {
-  const variants = {
-    default: "bg-backdrop-700 text-backdrop-200",
-    success: "bg-green-500/20 text-green-400 border border-green-500/30",
-    warning: "bg-amber-500/20 text-amber-400 border border-amber-500/30",
-    error: "bg-red-500/20 text-red-400 border border-red-500/30",
-    info: "bg-blue-500/20 text-blue-400 border border-blue-500/30",
+  // Use inline styles for exact color control from Figma
+  const variantStyles: Record<string, React.CSSProperties> = {
+    default: {
+      backgroundColor: "transparent",
+      border: "1px solid #414651",
+      color: "#FFFFFF",
+    },
+    success: {
+      backgroundColor: "transparent",
+      border: "1px solid rgba(34, 197, 94, 0.5)",
+      color: "#4ade80",
+    },
+    warning: {
+      backgroundColor: "transparent",
+      border: "1px solid rgba(245, 158, 11, 0.5)",
+      color: "#fbbf24",
+    },
+    error: {
+      backgroundColor: "transparent",
+      border: "1px solid rgba(239, 68, 68, 0.5)",
+      color: "#f87171",
+    },
+    info: {
+      backgroundColor: "transparent",
+      border: "1px solid rgba(59, 130, 246, 0.5)",
+      color: "#60a5fa",
+    },
+    you: {
+      backgroundColor: "transparent",
+      border: "1px solid #414651",
+      color: "#FFFFFF",
+    },
   };
 
   const sizes = {
-    sm: "text-xs px-2 py-1",
+    sm: "text-xs px-2 py-0.5",
     md: "text-sm px-3 py-1",
   };
 
   return (
     <span
-      className={`inline-flex items-center font-medium rounded-full ${variants[variant]} ${sizes[size]} ${className}`}
+      className={`inline-flex items-center font-bold uppercase ${sizes[size]} ${className}`}
+      style={variantStyles[variant]}
     >
       {children}
     </span>
