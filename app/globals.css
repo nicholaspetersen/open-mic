@@ -2,19 +2,15 @@
 
 /* Third Man Records aesthetic - minimal, dark, bold yellow */
 
-/* Custom fonts - Inter for clean, bold typography */
-@font-face {
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 100 900;
-  font-display: swap;
-  src: url("https://fonts.gstatic.com/s/inter/v18/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2")
-    format("woff2");
-}
+/* 
+ * Fonts: DIN - the real deal from Adobe Fonts
+ * DIN Condensed for titles, DIN 2014 for body
+ * Loaded via Typekit in layout.tsx
+ */
 
 :root {
-  --font-display: "Inter", system-ui, sans-serif;
-  --font-body: "Inter", system-ui, sans-serif;
+  --font-display: din-condensed, sans-serif;
+  --font-body: din-2014, sans-serif;
   
   /* Third Man color palette - exact from Figma */
   --tm-yellow: #FAC515;
@@ -35,6 +31,15 @@ body {
   min-height: 100dvh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Display font for titles */
+.font-display {
+  font-family: var(--font-display);
+}
+
+h1, h2, .text-display {
+  font-family: var(--font-display);
 }
 
 /* Touch-friendly tap targets */
