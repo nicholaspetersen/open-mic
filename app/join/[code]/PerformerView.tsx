@@ -113,7 +113,7 @@ export function PerformerView({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <h1 className="text-2xl font-bold uppercase mb-3" style={{ color: COLORS.white }}>Event Closed</h1>
+          <h1 className="text-3xl font-bold mb-3" style={{ color: COLORS.white }}>Event Closed</h1>
           <p style={{ color: COLORS.gray }} className="mb-6">This open mic night has ended. Thanks for coming!</p>
         </div>
       </main>
@@ -130,7 +130,7 @@ export function PerformerView({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <h1 className="text-2xl font-bold uppercase mb-3" style={{ color: COLORS.white }}>Coming Soon</h1>
+          <h1 className="text-3xl font-bold mb-3" style={{ color: COLORS.white }}>Coming Soon</h1>
           <p style={{ color: COLORS.gray }} className="mb-6">Signups haven&apos;t opened yet. Check back soon!</p>
         </div>
       </main>
@@ -149,7 +149,7 @@ export function PerformerView({
       <div className="max-w-lg mx-auto px-4 py-6">
         {/* Event Info */}
         <div className="mb-3">
-          <h1 className="text-2xl font-bold uppercase tracking-tight" style={{ color: COLORS.white }}>{event.name}</h1>
+          <h1 className="text-3xl font-bold tracking-tight" style={{ color: COLORS.white }}>{event.name}</h1>
           <p style={{ color: COLORS.gray }}>
             {formatDate(event.date)}
             {event.venue && ` • ${event.venue}`}
@@ -190,7 +190,7 @@ export function PerformerView({
         {/* Queue Section */}
         <section className="mb-6">
           <div className="flex items-center justify-between pb-2 mb-4" style={{ borderBottom: `1px solid ${COLORS.border}` }}>
-            <h2 className="text-xl font-bold uppercase tracking-tight" style={{ color: COLORS.yellow }}>
+            <h2 className="text-lg font-bold" style={{ color: COLORS.yellow }}>
               Queue ({totalInQueue})
             </h2>
           </div>

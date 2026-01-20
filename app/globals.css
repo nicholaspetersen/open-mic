@@ -33,13 +33,25 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Display font for titles */
-.font-display {
-  font-family: var(--font-display);
+/* Display font for main page titles only - condensed, uppercase, larger */
+.font-display,
+.text-display {
+  font-family: var(--font-display) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.02em;
 }
 
-h1, h2, .text-display {
-  font-family: var(--font-display);
+/* Only h1 gets the condensed treatment - main page titles */
+h1 {
+  font-family: var(--font-display) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.02em;
+}
+
+/* h2 stays in body font - used in cards and sections */
+h2 {
+  font-family: var(--font-body) !important;
+  text-transform: none !important;
 }
 
 /* Touch-friendly tap targets */

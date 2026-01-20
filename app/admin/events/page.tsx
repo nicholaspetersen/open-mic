@@ -43,7 +43,7 @@ export default async function EventsPage() {
   return (
     <main className="max-w-4xl mx-auto p-4 pb-8" style={{ background: COLORS.bg }}>
       <div className="flex items-center justify-between mb-6 pb-4" style={{ borderBottom: `1px solid ${COLORS.border}` }}>
-        <h1 className="text-2xl font-bold uppercase" style={{ color: COLORS.white }}>Events</h1>
+        <h1 className="text-3xl font-bold" style={{ color: COLORS.white }}>Events</h1>
         <CreateEventButton />
       </div>
 
@@ -68,7 +68,7 @@ export default async function EventsPage() {
                 <div className="flex items-center justify-between">
                   <Link href={`/admin/queue/${event.id}`} className="flex-1">
                     <div className="flex items-center gap-3 mb-1">
-                      <h2 className="font-bold text-lg uppercase" style={{ color: COLORS.white }}>{event.name}</h2>
+                      <h2 className="font-bold text-lg" style={{ color: COLORS.white }}>{event.name}</h2>
                       <Badge variant={status.variant} size="sm">
                         {status.label}
                       </Badge>

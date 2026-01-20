@@ -55,7 +55,7 @@ export default async function QueuePage({ params }: QueuePageProps) {
       <div className="mb-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">{event.name}</h1>
+            <h1 className="text-3xl font-bold">{event.name}</h1>
             <p className="text-backdrop-400">
               {new Date(event.date).toLocaleDateString("en-US", {
                 weekday: "long",

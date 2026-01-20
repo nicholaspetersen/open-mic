@@ -31,7 +31,7 @@ export function RequestsPanel({ requests, onAction, onClose }: RequestsPanelProp
         {/* Header */}
         <div className="flex items-center justify-between p-4" style={{ borderBottom: `1px solid ${COLORS.border}` }}>
           <div className="flex items-center gap-2">
-            <h2 className="text-lg font-bold uppercase" style={{ color: COLORS.white }}>Song Requests</h2>
+            <h2 className="text-lg font-bold" style={{ color: COLORS.white }}>Song Requests</h2>
             <Badge variant="warning">{requests.length}</Badge>
           </div>
           <button

@@ -44,7 +44,7 @@ export default async function EditEventPage({ params }: EditEventPageProps) {
     <main className="max-w-2xl mx-auto p-4 pb-8" style={{ background: COLORS.bg }}>
       {/* Header */}
       <div className="mb-6 pb-4" style={{ borderBottom: `1px solid ${COLORS.border}` }}>
-        <h1 className="text-2xl font-bold uppercase" style={{ color: COLORS.white }}>Edit Event</h1>
+        <h1 className="text-3xl font-bold" style={{ color: COLORS.white }}>Edit Event</h1>
         <p style={{ color: COLORS.gray }}>{event.name}</p>
       </div>
 

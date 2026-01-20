@@ -245,7 +245,7 @@ export function QueueDashboard({
       {/* Queue */}
       <div>
         <div className="flex items-center justify-between mb-3 pb-2" style={{ borderBottom: `1px solid ${COLORS.border}` }}>
-          <h2 className="text-lg font-bold uppercase" style={{ color: COLORS.yellow }}>
+          <h2 className="text-lg font-bold" style={{ color: COLORS.yellow }}>
             Queue ({waitingQueue.length})
           </h2>
           <p className="text-sm uppercase" style={{ color: COLORS.gray }}>Drag to reorder</p>
@@ -286,7 +286,7 @@ export function QueueDashboard({
       {/* Completed */}
       {completedSignups.length > 0 && (
         <div>
-          <h2 className="text-lg font-bold uppercase mb-3" style={{ color: COLORS.gray }}>
+          <h2 className="text-lg font-bold mb-3" style={{ color: COLORS.gray }}>
             Completed ({completedSignups.length})
           </h2>
           <div className="space-y-2 opacity-60">

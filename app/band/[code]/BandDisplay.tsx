@@ -63,7 +63,7 @@ export function BandDisplay({
     <main className="min-h-dvh p-6 sm:p-8 flex flex-col" style={{ background: COLORS.bg, color: COLORS.white }}>
       {/* Header */}
       <header className="flex items-center justify-between mb-8 pb-4" style={{ borderBottom: `1px solid ${COLORS.border}` }}>
-        <h1 className="text-xl font-bold uppercase tracking-tight" style={{ color: COLORS.yellow }}>{eventName}</h1>
+        <h1 className="text-2xl font-bold tracking-tight" style={{ color: COLORS.yellow }}>{eventName}</h1>
         <div className="flex items-center gap-2">
           <div
             className="w-2 h-2"
